@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Hanger India') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-     
-
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+@extends('layouts')
+ 
+@section('title', 'HangerIndia')
+ <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('') }}">
-                    {{ config('app.name', 'Hanger India') }}
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'HangerIndia') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -73,10 +52,44 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+@section('content')
+    <div class="container products">
+        <div class="row">
+            Service list Page
+                <table class="table table-striped">
+    <thead>
+        <tr>
+          <td>ID</td>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Phone</td>
+          <td>Description</td>
+          <td colspan="2">Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($services as $ser)
+        <tr>
+            <td>{{$ser->id}}</td>
+            <td>{{$ser->name}}</td>
+            <td>{{$ser->email}}</td>
+            <td>{{$ser->phone}}</td>
+            <td>{{$ser->service_description}}</td>
+            <td><a href="{{ url('service-edit',$ser->id)}}" class="btn btn-primary">Edit</a></td>
+            <td>
+                <form action="{{ url('service-destroy', $ser->id)}}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+  </table>   
+            
+        </div><!-- End row -->
+ 
     </div>
-</body>
-</html>
+ 
+@endsection

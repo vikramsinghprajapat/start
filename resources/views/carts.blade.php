@@ -83,9 +83,9 @@
                     </td>
                     <td data-th="Price" class="price"><span>{{ $details['price'] }}</span></td>
                     <td data-th="Quantity">
-                        <input type="number" id="quantity"  value="{{ $details['quantity'] }}" class="form-control quantity" / name="quantity">
+                        <input type="number" id="quantity"  value="{{ $details['quantity'] }}" class="form-control quantity" >
                     </td>
-                    <td data-th="Subtotal"  id="subtotal" class="text-center hide-data">{{ $details['price'] * $details['quantity'] }}</td>
+                    <td data-th="Subtotal"  id="subtotal" class="text-center">{{ $details['price'] * $details['quantity'] }}</td>
 
                     <td class="actions" data-th="">
                         <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}"><i class="fa fa-refresh"></i></button>
@@ -143,24 +143,30 @@
             }
         });
 
-      
-
-      $('.quantity').on('change keyup', function() {
-            $('.hide-data').hide();
-             $("table tbody tr").each(function (i) {
-                if($(this).find("td").eq(2).find(".quantity").val()){
-                    var price = $(this).find("td").eq(1).text();   
-                    var quantity = $(this).find("td").eq(2).find(".quantity").val();
-                    var tot = parseInt(price) * parseInt(quantity);
-                     $('#subtotal').text(tot);
-                     $('.tot').text(tot);
-                     $('.hide-data').show();
-                     
-                }
+        $(document).delegate('.quantity','keyup',function(){
+            var qty  = parseFloat($(this).val());
+            var amount = parseFloat($(this).parent().parent().find('.price').text());
+                if(isNaN(qty))
+                  qty = 0;
+                if(isNaN(amount))
+                  amount = 0;
+                var totalamt = qty * amount;
+                $(this).parent().parent().find('#subtotal').text(totalamt);
+                var grandtotal = 0;
+                $("tr #subtotal").each(function(i) {
+                    var grand = parseFloat($(this).text());
+                    if(isNaN(grand) || grand == "")
+                    grand = 0;
+                    grandtotal+= parseFloat(grand);
+                   $(".tot").text(grandtotal);
+                });
+                 if(isNaN(grandtotal))
+                    grandtotal = 0;
+                $(".tot").text(grandtotal);
+                
                
-            })
-            
-          });
+
+        });
 
 
         

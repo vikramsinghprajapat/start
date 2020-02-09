@@ -17,16 +17,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
- Route::get('/home', 'HomeController@index')->name('home');
-// Route::post('add-category', 'CategoryController@addCategory');
-// Route::get('category-list', 'CategoryController@categoryList');
-// Route::post('add-product', 'ProductController@addProduct');
-// Route::get('product-list/{start}/{limit}/{catFilter}', 'ProductController@productList');
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('product-list', 'ProductController@index');
+
  
-Route::get('cart', 'ProductController@cart');
+Route::get('get-vehicle-model', 'ServiceRequestController@getVehicleModel');
  
-Route::get('add-to-cart/{id}', 'ProductController@addToCart');
-Route::patch('update-cart', 'ProductController@update');
-Route::delete('remove-from-cart', 'ProductController@remove');
+Route::post('create-request', 'ServiceRequestController@store');
+Route::get('service-list', 'ServiceRequestController@getServiceList');
+Route::get('service-edit/{id}', 'ServiceRequestController@edit');
+Route::POST('update-request', 'ServiceRequestController@updateRequest');
+Route::DELETE('service-destroy/{id}', 'ServiceRequestController@deleteRequest');
